@@ -23,6 +23,7 @@ alias up='sudo dnf update -y && sudo dnf upgrade -y && flatpak update -y'
 alias upr='sudo dnf update -y && sudo dnf upgrade --refresh -y && flatpak update -y'
 alias cc="sudo dnf autoremove -y && dnf clean all -y && flatpak uninstall --unused -y && flatpak remove --delete-data && sudo journalctl --vacuum-time=1weeks"
 alias dnfi="sudo dnf install"
+alias fif="flatpak install flathub"
 
 # Changing 'ls' to 'eza'
 alias ls='eza --icons --color=always --group-directories-first'
@@ -32,11 +33,41 @@ alias l='eza -F --icons --color=always --group-directories-first'
 alias l.='eza -a | egrep "^\."'
 ```
 
-System update, upgrade and cleaning from an old packages
+Set default dnf response to "Y"
+
+```bash
+echo "defaultyes=True" >> /etc/dnf/dnf.conf
+```
+
+System update, upgrade and clean up from an old packages
 
 ```bash
 upr
 cc
+sudo dnf makecache --refresh
+sudo dnf -y groupupdate core
+```
+
+Enabling the RPM Fusion repositories
+
+```bash
+dnfi -y https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
+dnfi -y rpmfusion-free-release-tainted rpmfusion-nonfree-release-tainted
+```
+
+Updating firmware
+
+```bash
+sudo fwupdmgr get-devices
+sudo fwupdmgr refresh --force
+sudo fwupdmgr get-updates
+sudo fwupdmgr update
+```
+
+Enabling firewall
+
+```bash
+sudo firewall-cmd --add-service=http --permanent sudo firewall-cmd --add-service=https --permanent sudo firewall-cmd --reload
 ```
 
 Installation of a zsh with oh-my-zsh (https://ohmyz.sh/#install)
@@ -61,10 +92,15 @@ git clone https://github.com/ptavares/zsh-exa.git ~/.oh-my-zsh/custom/plugins/zs
 # powerlevel10k
 git clone --depth=1 https://github.com/romkatv/powerlevel10k.git $
 typeset -g POWERLEVEL9K_INSTANT_PROMPT=off
-ZSH_THEME="powerlevel10k/powerlevel10k"
 {ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
 
 omz update
+
+# set theme and plugins in .zshrc
+zshrc
+
+# ZSH_THEME="powerlevel10k/powerlevel10k"
+# plugins=(git zsh-autosuggestions zsh-syntax-highlighting zsh-exa)
 
 source ~/.zshrc
 ```
@@ -74,6 +110,93 @@ Git configuration
 ```bash
 git config --global user.name "Meirbek"
 git config --global user.email "meirbek@email.com"
+```
+
+Installing useful apps & packages
+
+```bash
+dnfi -y neofetch btop htop git bleachbit stacer tlp tlp-rdw qbittorrent curl cabextract xorg-x11-font-utils fontconfig libdvdcss dnf-plugins-core vlc zsh ranger
+
+# For NCALayer
+dnfi zenity vim-common
+
+# Archives
+dnfi -y unzip p7zip p7zip-plugins unrar
+
+# Fonts
+dnfi -y 'google-roboto*' 'mozilla-fira*' fira-code-fonts
+# Microsoft fonts
+sudo rpm -i https://downloads.sourceforge.net/project/mscorefonts2/rpms/msttcore-fonts-installer-2.6-1.noarch.rpm
+
+# Multimedia
+dnfi -y gstreamer1-plugins-{bad-\*,good-\*,base} gstreamer1-plugin-openh264 gstreamer1-libav mozilla-openh264 --exclude=gstreamer1-plugins-bad-free-devel ffmpeg gstreamer-ffmpeg
+dnfi -y lame* --exclude=lame-devel
+
+sudo dnf config-manager --set-enabled fedora-cisco-openh264
+
+sudo dnf -y groupupdate sound-and-video
+sudo dnf -y group upgrade --with-optional Multimedia
+```
+
+Enable automatic dnf updates(weekly by default)
+
+```bash
+dnfi -y dnf-automatic
+
+# edit config if needed
+sudo n /etc/dnf/automatic.conf
+
+sudo systemctl enable --now dnf-automatic.timer
+```
+
+Installing proprietary NVIDIA drivers
+
+```bash
+dnfi gcc kernel-headers kernel-devel akmod-nvidia xorg-x11-drv-nvidia xorg-x11-drv-nvidia-libs xorg-x11-drv-nvidia-power xorg-x11-drv-nvidia-cuda nvidia-settings
+```
+
+Removing irrelevant packages
+
+```bash
+
+# Fonts for languages that I don't know
+sudo dnf remove default-fonts-other-serif
+```
+
+Autoselect grub entry
+
+```bash
+echo "GRUB_HIDDEN_TIMEOUT=0" >> /etc/default/grub
+sudo grub2-mkconfig
+```
+
+Flatpaks & Flathub
+
+```bash
+# installing flatpak
+dnfi -y flatpak
+
+# adding flathub
+flatpak remote-modify --enable flathub
+flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+
+# installing apps
+fif com.spotify.Client
+fif com.obsproject.Studio
+fif com.google.Chrome
+fif org.telegram.desktop
+fif us.zoom.Zoom
+fif com.github.tchx84.Flatseal
+fif com.calibre_ebook.calibre
+fif com.todoist.Todoist
+fif com.github.d4nj1.tlpui
+fif org.mozilla.Thunderbird
+fif org.jupyter.JupyterLab
+fif com.ktechpit.whatsie
+fif com.discordapp.Discord
+fif com.jetbrains.IntelliJ-IDEA-Ultimate
+fif com.jetbrains.PyCharm-Professional
+fif com.jetbrains.WebStorm
 ```
 
 Anaconda installation (https://www.anaconda.com/download)
@@ -201,10 +324,11 @@ npm -g install npm-check-updates typescript prettier pnpm yarn deno bun
 Установка Neovim & NvChad (https://nvchad.com/docs/quickstart/install)
 
 ```bash
-sudo dnf install python3-neovim
+dnfi python3-neovim
 chmod 777 ./apps/nvim/bin/nvim
 export PATH=$PATH:/home/meirb/apps/nvim/bin
 source ~/.zshrc
 # NvChad
 git clone https://github.com/NvChad/NvChad ~/.config/nvim --depth 1 && nvim
+echo "vim.opt.relativenumber = true" >> ~/.config/nvim/lua/custom/init.lua
 ```

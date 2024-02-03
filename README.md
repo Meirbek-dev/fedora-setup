@@ -2,13 +2,13 @@
 
 ## My Fedora 39, KDE 5.27 configuration
 
-Open runcom file
+### Open runcom file
 
 ```bash
 nano ~/.bashrc
 ```
 
-And add aliases at the bottom of it
+### And add aliases at the bottom
 
 ```bash
 alias bashrc="nvim ~/.bashrc"
@@ -33,13 +33,13 @@ alias l='eza -F --icons --color=always --group-directories-first'
 alias l.='eza -a | egrep "^\."'
 ```
 
-Set default dnf response to "Y"
+### Set default dnf response to "Y"
 
 ```bash
 echo "defaultyes=True" >> /etc/dnf/dnf.conf
 ```
 
-System update, upgrade and clean up from an old packages
+### System update, upgrade and clean up from old packages
 
 ```bash
 upr
@@ -48,14 +48,14 @@ sudo dnf -y groupupdate core
 cc
 ```
 
-Enabling the RPM Fusion repositories
+### Enabling the RPM Fusion repositories
 
 ```bash
 dnfi -y https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
 dnfi -y rpmfusion-free-release-tainted rpmfusion-nonfree-release-tainted
 ```
 
-Updating firmware
+### Updating firmware
 
 ```bash
 sudo fwupdmgr get-devices
@@ -64,13 +64,13 @@ sudo fwupdmgr get-updates
 sudo fwupdmgr update
 ```
 
-Enabling firewall
+### Enabling firewall
 
 ```bash
 sudo firewall-cmd --add-service=http --permanent sudo firewall-cmd --add-service=https --permanent sudo firewall-cmd --reload
 ```
 
-Installation of a zsh with oh-my-zsh (https://ohmyz.sh/#install)
+### Installing zsh with [oh-my-zsh](https://ohmyz.sh/#install)
 
 ```bash
 dnfi zsh exa -y
@@ -105,14 +105,14 @@ zshrc
 source ~/.zshrc
 ```
 
-Git configuration
+### Configuring git
 
 ```bash
 git config --global user.name "Meirbek"
 git config --global user.email "meirbek@email.com"
 ```
 
-Installing useful apps & packages
+### Installing useful apps & packages
 
 ```bash
 dnfi -y neofetch btop htop git bleachbit stacer tlp tlp-rdw qbittorrent curl cabextract xorg-x11-font-utils fontconfig libdvdcss dnf-plugins-core vlc ranger
@@ -138,7 +138,7 @@ sudo dnf -y groupupdate sound-and-video
 sudo dnf -y group upgrade --with-optional Multimedia
 ```
 
-Enable automatic dnf updates(weekly by default)
+### Enabling automatic dnf updates (weekly by default)
 
 ```bash
 dnfi -y dnf-automatic
@@ -149,27 +149,27 @@ sudo n /etc/dnf/automatic.conf
 sudo systemctl enable --now dnf-automatic.timer
 ```
 
-Installing proprietary NVIDIA drivers with CUDA
+### Installing proprietary NVIDIA drivers with CUDA
 
 ```bash
 dnfi gcc kernel-headers kernel-devel akmod-nvidia xorg-x11-drv-nvidia xorg-x11-drv-nvidia-libs xorg-x11-drv-nvidia-power xorg-x11-drv-nvidia-cuda nvidia-settings
 ```
 
-Removing irrelevant packages
+### Removing irrelevant packages
 
 ```bash
 # Fonts for languages that I don't know
 sudo dnf remove default-fonts-other-serif
 ```
 
-Autostart grub
+### Autostart grub
 
 ```bash
 echo "GRUB_HIDDEN_TIMEOUT=0" >> /etc/default/grub
 sudo grub2-mkconfig
 ```
 
-Flatpaks & Flathub
+### Flatpaks & Flathub
 
 ```bash
 # installing flatpak
@@ -199,7 +199,7 @@ fif com.jetbrains.PyCharm-Professional
 fif com.jetbrains.WebStorm
 ```
 
-Anaconda installation (https://www.anaconda.com/download)
+### [Installing Anaconda](https://www.anaconda.com/download)
 
 ```bash
 wget https://repo.anaconda.com/archive/Anaconda3-2023.09-0-Linux-x86_64.sh
@@ -208,13 +208,13 @@ bash ./Anaconda*.sh -b -u
 rm Anaconda*.sh
 ```
 
-Scikit-learn acceleration
+### Scikit-learn acceleration
 
 ```bash
 conda install scikit-learn-intelex
 ```
 
-Updating and cleaning irrelevant Anaconda packages
+### Updating and cleaning irrelevant Anaconda packages
 
 ```bash
 conda update conda
@@ -222,14 +222,14 @@ conda update --all
 conda clean --all
 ```
 
-Installing conda version of pip
+### Installing conda version of pip
 
 ```bash
 conda install pip
 which pip
 ```
 
-Installation of a Language Server Protocols and python formatters
+### Installing Language Server Protocols and python formatters
 
 ```bash
 npm install bash-language-server
@@ -238,13 +238,13 @@ pip install --upgrade jupyter_lsp notebook_shim chardet
 pip install pycodestyle mccabe pyflakes pylint rope yapf autopep8 pydocstyle
 ```
 
-Jupyter Lab & Notebook dependencies
+### Installing Jupyter Lab & Notebook dependencies
 
 ```bash
 conda install jupyterlab notebook nb_conda_kernels chardet
 ```
 
-Creating environment for TensorFlow + CUDA development
+### Creating conda environment for TensorFlow + CUDA development
 
 ```bash
 conda create -n fras pip python=3.11
@@ -260,7 +260,7 @@ python -c "import tensorflow as tf;print(tf.reduce_sum(tf.random.normal([1000, 1
 python -c "import tensorflow as tf; print(tf.config.list_physical_devices('GPU'))"
 ```
 
-Conda environment autostart
+### Conda environment autostart
 
 ```bash
 CONDA_ENV_NAME = "example"
@@ -268,38 +268,37 @@ echo "conda activate $CONDA_ENV_NAME" >> ~/.bashrc
 echo "conda activate $CONDA_ENV_NAME" >> ~/.zshrc
 ```
 
-Disable NUMA unavialability error messages in TensorFlow
+### Disable NUMA unavialability error messages in TensorFlow
 
 ```bash
 export TF_CPP_MIN_LOG_LEVEL=1
 ```
 
-Pulling offical TensorFlow Docker image
+### Pulling offical TensorFlow Docker image
 
 ```bash
 docker pull tensorflow/tensorflow
 
 ```
 
-Run container with GPU support and Python interpreter.
+### Run container with GPU support and Python interpreter.
 
 ```bash
 docker run -it --rm --gpus all tensorflow/tensorflow:latest-gpu python
 ```
 
-Run Jupyter Notebook Server with GPU support and Python interpreter.
+### Run Jupyter Notebook Server with GPU support and Python interpreter.
 
 ```bash
 docker run -it --rm --gpus all -v $(realpath ~/notebooks):/tf/notebooks -p 8888:8888 tensorflow/tensorflow:latest-gpu-jupyter
 ```
 
-Installing and configuring web development tools.
+### Installing and configuring web development tools.
 
-[NVM installation docs](https://github.com/nvm-sh/nvm?tab=readme-ov-file#installing-and-updating)
+### [NVM installation docs](https://github.com/nvm-sh/nvm?tab=readme-ov-file#installing-and-updating)
 
 ```bash
 
-# Node Version Manager
 curl -qL https://www.npmjs.com/install.sh | sh
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
 export NVM_DIR="$HOME/.nvm"
@@ -315,7 +314,7 @@ node -v
 npm -g install npm-check-updates typescript prettier pnpm yarn deno bun
 ```
 
-Установка Neovim & NvChad (https://nvchad.com/docs/quickstart/install)
+### [Installing Neovim & NvChad](https://nvchad.com/docs/quickstart/install)
 
 ```bash
 dnfi python3-neovim
@@ -326,3 +325,11 @@ source ~/.zshrc
 git clone https://github.com/NvChad/NvChad ~/.config/nvim --depth 1 && nvim
 echo "vim.opt.relativenumber = true" >> ~/.config/nvim/lua/custom/init.lua
 ```
+
+## Other resources
+
+### [Installing MySQL](https://docs.fedoraproject.org/en-US/quick-docs/installing-mysql-mariadb/)
+
+### [Installing PostgreSQL](https://docs.fedoraproject.org/en-US/quick-docs/postgresql/#installation/)
+
+### [Nerd Fonts](https://www.nerdfonts.com/font-downloads)

@@ -1,6 +1,6 @@
 # fedora-setup
 
-## My Fedora 39, KDE 5.27 configuration
+## My Fedora 40, KDE 6 configuration
 
 ### Open runcom file
 

@@ -19,11 +19,11 @@ alias jl='jupyter-lab'
 alias jn='jupyter-notebook'
 alias nf="neofetch"
 
+alias dnfi="sudo dnf install"
+alias fif="flatpak install flathub"
 alias up='sudo dnf update -y && sudo dnf upgrade -y && flatpak update -y'
 alias upr='sudo dnf update -y && sudo dnf upgrade --refresh -y && flatpak update -y'
 alias cc="sudo dnf autoremove -y && dnf clean all -y && flatpak uninstall --unused -y && flatpak remove --delete-data && sudo journalctl --vacuum-time=1weeks"
-alias dnfi="sudo dnf install"
-alias fif="flatpak install flathub"
 
 # Changing 'ls' to 'eza'
 alias ls='eza --icons --color=always --group-directories-first'
@@ -43,9 +43,9 @@ System update, upgrade and clean up from an old packages
 
 ```bash
 upr
-cc
 sudo dnf makecache --refresh
 sudo dnf -y groupupdate core
+cc
 ```
 
 Enabling the RPM Fusion repositories
@@ -73,7 +73,7 @@ sudo firewall-cmd --add-service=http --permanent sudo firewall-cmd --add-service
 Installation of a zsh with oh-my-zsh (https://ohmyz.sh/#install)
 
 ```bash
-sudo apt install zsh exa -y
+dnfi zsh exa -y
 zsh
 chsh -s /bin/zsh
 
@@ -115,7 +115,7 @@ git config --global user.email "meirbek@email.com"
 Installing useful apps & packages
 
 ```bash
-dnfi -y neofetch btop htop git bleachbit stacer tlp tlp-rdw qbittorrent curl cabextract xorg-x11-font-utils fontconfig libdvdcss dnf-plugins-core vlc zsh ranger
+dnfi -y neofetch btop htop git bleachbit stacer tlp tlp-rdw qbittorrent curl cabextract xorg-x11-font-utils fontconfig libdvdcss dnf-plugins-core vlc ranger
 
 # For NCALayer
 dnfi zenity vim-common
@@ -149,7 +149,7 @@ sudo n /etc/dnf/automatic.conf
 sudo systemctl enable --now dnf-automatic.timer
 ```
 
-Installing proprietary NVIDIA drivers
+Installing proprietary NVIDIA drivers with CUDA
 
 ```bash
 dnfi gcc kernel-headers kernel-devel akmod-nvidia xorg-x11-drv-nvidia xorg-x11-drv-nvidia-libs xorg-x11-drv-nvidia-power xorg-x11-drv-nvidia-cuda nvidia-settings
@@ -158,12 +158,11 @@ dnfi gcc kernel-headers kernel-devel akmod-nvidia xorg-x11-drv-nvidia xorg-x11-d
 Removing irrelevant packages
 
 ```bash
-
 # Fonts for languages that I don't know
 sudo dnf remove default-fonts-other-serif
 ```
 
-Autoselect grub entry
+Autostart grub
 
 ```bash
 echo "GRUB_HIDDEN_TIMEOUT=0" >> /etc/default/grub
@@ -181,19 +180,20 @@ flatpak remote-modify --enable flathub
 flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
 
 # installing apps
+fif org.telegram.desktop
+fif com.ktechpit.whatsie
+fif com.discordapp.Discord
+fif us.zoom.Zoom
+
 fif com.spotify.Client
 fif com.obsproject.Studio
 fif com.google.Chrome
-fif org.telegram.desktop
-fif us.zoom.Zoom
 fif com.github.tchx84.Flatseal
 fif com.calibre_ebook.calibre
 fif com.todoist.Todoist
-fif com.github.d4nj1.tlpui
 fif org.mozilla.Thunderbird
+
 fif org.jupyter.JupyterLab
-fif com.ktechpit.whatsie
-fif com.discordapp.Discord
 fif com.jetbrains.IntelliJ-IDEA-Ultimate
 fif com.jetbrains.PyCharm-Professional
 fif com.jetbrains.WebStorm
@@ -266,12 +266,6 @@ Conda environment autostart
 CONDA_ENV_NAME = "example"
 echo "conda activate $CONDA_ENV_NAME" >> ~/.bashrc
 echo "conda activate $CONDA_ENV_NAME" >> ~/.zshrc
-```
-
-Nvidia GPU information
-
-```bash
-nvidia-smi
 ```
 
 Disable NUMA unavialability error messages in TensorFlow

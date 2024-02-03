@@ -48,7 +48,7 @@ sudo dnf -y groupupdate core
 cc
 ```
 
-### Enabling the RPM Fusion repositories
+### [Enabling the RPM Fusion repositories](https://docs.fedoraproject.org/en-US/quick-docs/rpmfusion-setup/)
 
 ```bash
 dnfi -y https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
@@ -117,9 +117,6 @@ git config --global user.email "meirbek@email.com"
 ```bash
 dnfi -y neofetch btop htop git bleachbit stacer tlp tlp-rdw qbittorrent curl cabextract xorg-x11-font-utils fontconfig libdvdcss dnf-plugins-core vlc ranger
 
-# For NCALayer
-dnfi zenity vim-common
-
 # Archives
 dnfi -y unzip p7zip p7zip-plugins unrar
 
@@ -136,6 +133,14 @@ sudo dnf config-manager --set-enabled fedora-cisco-openh264
 
 sudo dnf -y groupupdate sound-and-video
 sudo dnf -y group upgrade --with-optional Multimedia
+```
+
+### Installing NCALayer
+
+```bash
+[Download NCALayer](https://ncl.pki.gov.kz/)
+# Install NCALayer dependencies
+dnfi zenity vim-common
 ```
 
 ### Enabling automatic dnf updates (weekly by default)
@@ -281,19 +286,19 @@ docker pull tensorflow/tensorflow
 
 ```
 
-### Run container with GPU support and Python interpreter.
+### Run container with GPU support and Python interpreter
 
 ```bash
 docker run -it --rm --gpus all tensorflow/tensorflow:latest-gpu python
 ```
 
-### Run Jupyter Notebook Server with GPU support and Python interpreter.
+### Run Jupyter Notebook Server with GPU support and Python interpreter
 
 ```bash
 docker run -it --rm --gpus all -v $(realpath ~/notebooks):/tf/notebooks -p 8888:8888 tensorflow/tensorflow:latest-gpu-jupyter
 ```
 
-### Installing and configuring web development tools.
+### Installing and configuring web development tools
 
 ### [NVM installation docs](https://github.com/nvm-sh/nvm?tab=readme-ov-file#installing-and-updating)
 

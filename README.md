@@ -17,7 +17,6 @@ alias c="code"
 alias n="nvim"
 alias jl='jupyter-lab'
 alias jn='jupyter-notebook'
-alias nf="neofetch"
 
 alias dnfi="sudo dnf install"
 alias fif="flatpak install flathub"
@@ -238,7 +237,7 @@ which pip
 
 ```bash
 npm install bash-language-server
-pip install python-language-server # Does not support Python 3.11+
+pip install python-language-server ruff
 pip install --upgrade jupyter_lsp notebook_shim chardet
 pip install pycodestyle mccabe pyflakes pylint rope yapf autopep8 pydocstyle
 ```
@@ -315,8 +314,12 @@ nvm use node
 nvm -v
 npm -v
 node -v
+```
 
-npm -g install npm-check-updates typescript prettier pnpm yarn deno bun
+### Install JS tooling
+
+```bash
+npm -g install @biomejs/biome oxlint tslint depcheck npm-check-updates typescript prettier pnpm yarn pnpm deno bun eslint corepack
 ```
 
 ### [Installing Neovim & NvChad](https://nvchad.com/docs/quickstart/install)

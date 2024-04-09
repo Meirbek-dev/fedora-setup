@@ -34,6 +34,7 @@ alias jl='jupyter-lab'
 alias jn='jupyter-notebook'
 
 alias up='sudo dnf update -y && sudo dnf upgrade --refresh -y && flatpak update -y'
+alias upr='sudo dnf update -y && sudo dnf upgrade --refresh -y && flatpak update -y'
 alias cc="sudo dnf autoremove && dnf clean all && flatpak uninstall --unused -y && flatpak remove --delete-data && sudo journalctl --vacuum-time=1weeks"
 alias dnfi="sudo dnf install"
 alias fif="flatpak install flathub"

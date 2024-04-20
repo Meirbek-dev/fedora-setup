@@ -92,11 +92,8 @@ git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:
 git clone https://github.com/ptavares/zsh-exa.git ~/.oh-my-zsh/custom/plugins/zsh-exa
 
 # powerlevel10k
-git clone --depth=1 https://github.com/romkatv/powerlevel10k.git $
+git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
 typeset -g POWERLEVEL9K_INSTANT_PROMPT=off
-{ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
-
-omz update
 
 # set theme and plugins in .zshrc
 zshrc

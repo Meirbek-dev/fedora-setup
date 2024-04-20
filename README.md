@@ -66,7 +66,10 @@ sudo fwupdmgr update
 ### Enabling firewall
 
 ```bash
-sudo firewall-cmd --add-service=http --permanent sudo firewall-cmd --add-service=https --permanent sudo firewall-cmd --reload
+sudo dnf install firewalld
+sudo systemctl unmask firewalld
+sudo systemctl start firewalld
+sudo systemctl enable firewalld
 ```
 
 ### Installing zsh with [oh-my-zsh](https://ohmyz.sh/#install)
@@ -131,7 +134,7 @@ dnfi -y lame* --exclude=lame-devel
 sudo dnf config-manager --set-enabled fedora-cisco-openh264
 
 sudo dnf -y groupupdate sound-and-video
-sudo dnf -y group upgrade --with-optional Multimedia
+sudo dnf -y group upgrade --with-optional --allowerasing Multimedia
 ```
 
 ### Installing NCALayer
@@ -140,6 +143,15 @@ sudo dnf -y group upgrade --with-optional Multimedia
 [Download NCALayer](https://ncl.pki.gov.kz/)
 # Install NCALayer dependencies
 dnfi zenity vim-common
+```
+
+### [Installing VS Code](https://code.visualstudio.com/docs/setup/linux#_rhel-fedora-and-centos-based-distributions)
+
+```bash
+sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc
+sudo sh -c 'echo -e "[code]\nname=Visual Studio Code\nbaseurl=https://packages.microsoft.com/yumrepos/vscode\nenabled=1\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc" > /etc/yum.repos.d/vscode.repo'
+dnf check-update
+sudo dnf install code
 ```
 
 ### Enabling automatic dnf updates (weekly by default)
@@ -157,6 +169,8 @@ sudo systemctl enable --now dnf-automatic.timer
 
 ```bash
 dnfi gcc kernel-headers kernel-devel akmod-nvidia xorg-x11-drv-nvidia xorg-x11-drv-nvidia-libs xorg-x11-drv-nvidia-power xorg-x11-drv-nvidia-cuda nvidia-settings
+dnfi nvidia-vaapi-driver libva-utils vdpauinfo
+nvidia-smi
 ```
 
 ### Removing irrelevant packages
@@ -203,14 +217,14 @@ fif com.jetbrains.PyCharm-Professional
 fif com.jetbrains.WebStorm
 ```
 
-### [Installing Anaconda](https://www.anaconda.com/download)
+### [Make Python 3.11 default]
 
 ```bash
-wget https://repo.anaconda.com/archive/Anaconda3-2023.09-0-Linux-x86_64.sh
-chmod +x Anaconda*.sh
-bash ./Anaconda*.sh -b -u
-rm Anaconda*.sh
+sudo dnf install python3.11
+sudo ln -sf /usr/bin/python3.11 /usr/bin/python
 ```
+
+### [Install Anaconda](https://www.anaconda.com/download)
 
 ### Scikit-learn acceleration
 
@@ -253,11 +267,12 @@ conda install jupyterlab notebook nb_conda_kernels chardet
 ```bash
 conda create -n fras pip python=3.11
 conda activate fras
-pip install --upgrade tensorflow[and-cuda] # stable
-pip install --upgrade tf-nightly[and-cuda] # nightly
-pip install --upgrade keras==2.15.0
-pip install --upgrade customtkinter deepface
+conda update conda
+conda update --all
+pip install tensorflow[and-cuda]==2.15.1
 conda install opencv matplotlib
+pip install --upgrade customtkinter deepface
+echo "conda activate fras" >> ~/.bashrc
 # Verifying that Tensorflow is working properly
 python -c "import tensorflow as tf;print(tf.reduce_sum(tf.random.normal([1000, 1000])))"
 # Verifying that GPU is available for Tensorflow
@@ -327,11 +342,20 @@ npm -g install @biomejs/biome oxlint tslint depcheck npm-check-updates typescrip
 ```bash
 dnfi python3-neovim
 chmod 777 ./apps/nvim/bin/nvim
-export PATH=$PATH:/home/meirb/apps/nvim/bin
+export PATH=$PATH:/home/meirbek/Apps/nvim/bin
 source ~/.zshrc
 # NvChad
 git clone https://github.com/NvChad/NvChad ~/.config/nvim --depth 1 && nvim
 echo "vim.opt.relativenumber = true" >> ~/.config/nvim/lua/custom/init.lua
+```
+
+### [Installing Nerd Fonts](https://www.nerdfonts.com/font-downloads)
+
+```bash
+sudo cp ~/Downloads/JetBrainsMono/*.ttf /usr/share/fonts/
+sudo chmod 644 /usr/share/fonts/*.ttf
+sudo fc-cache -f -v
+fc-list | grep "JetBrains Mono"
 ```
 
 ## Other resources
@@ -339,5 +363,3 @@ echo "vim.opt.relativenumber = true" >> ~/.config/nvim/lua/custom/init.lua
 ### [Installing MySQL](https://docs.fedoraproject.org/en-US/quick-docs/installing-mysql-mariadb/)
 
 ### [Installing PostgreSQL](https://docs.fedoraproject.org/en-US/quick-docs/postgresql/#installation/)
-
-### [Nerd Fonts](https://www.nerdfonts.com/font-downloads)

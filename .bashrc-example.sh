@@ -33,11 +33,13 @@ alias n="nvim"
 alias jl='jupyter-lab'
 alias jn='jupyter-notebook'
 
-alias up='sudo dnf update -y && sudo dnf upgrade --refresh -y && flatpak update -y'
-alias upr='sudo dnf update -y && sudo dnf upgrade --refresh -y && flatpak update -y'
-alias cc="sudo dnf autoremove && dnf clean all && flatpak uninstall --unused -y && flatpak remove --delete-data && sudo journalctl --vacuum-time=1weeks"
 alias dnfi="sudo dnf install"
+alias dnfr="sudo dnf remove"
+alias dnfu="sudo dnf update"
 alias fif="flatpak install flathub"
+alias up='sudo dnf update -y && sudo dnf upgrade -y && flatpak update -y'
+alias upr='sudo dnf update -y && sudo dnf upgrade --refresh -y && flatpak update -y'
+alias cc="sudo dnf autoremove -y && dnf clean all -y && flatpak uninstall --unused -y && flatpak remove --delete-data && sudo journalctl --vacuum-time=1weeks && sudo rm -rf /tmp/*"
 
 # Changing 'ls' to 'eza'
 alias ls='eza --icons --color=always --group-directories-first'

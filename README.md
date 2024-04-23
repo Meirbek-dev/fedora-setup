@@ -8,30 +8,6 @@
 nano ~/.bashrc
 ```
 
-### And add aliases at the bottom
-
-```bash
-alias bashrc="nvim ~/.bashrc"
-alias zshrc="nvim ~/.zshrc"
-alias c="code"
-alias n="nvim"
-alias jl='jupyter-lab'
-alias jn='jupyter-notebook'
-
-alias dnfi="sudo dnf install"
-alias fif="flatpak install flathub"
-alias up='sudo dnf update -y && sudo dnf upgrade -y && flatpak update -y'
-alias upr='sudo dnf update -y && sudo dnf upgrade --refresh -y && flatpak update -y'
-alias cc="sudo dnf autoremove -y && dnf clean all -y && flatpak uninstall --unused -y && flatpak remove --delete-data && sudo journalctl --vacuum-time=1weeks"
-
-# Changing 'ls' to 'eza'
-alias ls='eza --icons --color=always --group-directories-first'
-alias ll='eza -alF --icons --color=always --group-directories-first'
-alias la='eza -a --icons --color=always --group-directories-first'
-alias l='eza -F --icons --color=always --group-directories-first'
-alias l.='eza -a | egrep "^\."'
-```
-
 ### Set default dnf response to "Y"
 
 ```bash
@@ -109,6 +85,9 @@ source ~/.zshrc
 ```bash
 git config --global user.name "Meirbek"
 git config --global user.email "meirbek@email.com"
+
+# Set timeout for reauthorization to 1 month
+git config --global credential.helper 'cache --timeout=2628000'
 ```
 
 ### Installing useful apps & packages
@@ -116,6 +95,9 @@ git config --global user.email "meirbek@email.com"
 ```bash
 dnfi -y neofetch btop htop git bleachbit stacer tlp tlp-rdw qbittorrent curl cabextract xorg-x11-font-utils fontconfig libdvdcss dnf-plugins-core vlc ranger
 
+dnfi -y java-latest-openjdk.x86_64
+dnfi -y gtk3-devel gcc gcc-c++ kernel-devel pkg-config make cmake clang
+dnfi -y @development-tools
 # Archives
 dnfi -y unzip p7zip p7zip-plugins unrar
 
@@ -127,7 +109,9 @@ sudo rpm -i https://downloads.sourceforge.net/project/mscorefonts2/rpms/msttcore
 # Multimedia
 dnfi -y gstreamer1-plugins-{bad-\*,good-\*,base} gstreamer1-plugin-openh264 gstreamer1-libav mozilla-openh264 --exclude=gstreamer1-plugins-bad-free-devel ffmpeg gstreamer-ffmpeg
 dnfi -y lame* --exclude=lame-devel
-
+sudo dnf update gstreamer1
+sudo dnf install gstreamer1-devel gstreamer1-plugins-base-devel
+sudo dnf install gstreamer1-plugins-bad-free
 sudo dnf config-manager --set-enabled fedora-cisco-openh264
 
 sudo dnf -y groupupdate sound-and-video
@@ -177,11 +161,12 @@ nvidia-smi
 sudo dnf remove default-fonts-other-serif
 ```
 
-### Autostart grub
+### Limit to 2 kernels
 
 ```bash
-echo "GRUB_HIDDEN_TIMEOUT=0" >> /etc/default/grub
-sudo grub2-mkconfig
+rpm -q kernel
+sudo dnf remove --oldinstallonly --setopt installonly_limit=2 kernel
+sudo dnf remove {kernel_version}
 ```
 
 ### Flatpaks & Flathub
@@ -266,7 +251,10 @@ conda create -n fras pip python=3.11
 conda activate fras
 conda update conda
 conda update --all
-pip install tensorflow[and-cuda]==2.15.1
+pip install tensorflow[and-cuda]==2.13.1
+pip install nvidia-cudnn-cu11==8.6.*
+conda install cudatoolkit=11.8.*
+conda install -c anaconda cmake
 conda install opencv matplotlib
 pip install --upgrade customtkinter deepface
 echo "conda activate fras" >> ~/.bashrc
@@ -274,6 +262,10 @@ echo "conda activate fras" >> ~/.bashrc
 python -c "import tensorflow as tf;print(tf.reduce_sum(tf.random.normal([1000, 1000])))"
 # Verifying that GPU is available for Tensorflow
 python -c "import tensorflow as tf; print(tf.config.list_physical_devices('GPU'))"
+
+sudo dnf config-manager --add-repo https://developer.download.nvidia.com/compute/cuda/repos/fedora35/x86_64/cuda-fedora35.repo
+sudo dnf module disable nvidia-driver
+sudo dnf -y install cuda
 ```
 
 ### Conda environment autostart
@@ -360,3 +352,7 @@ fc-list | grep "JetBrains Mono"
 ### [Installing MySQL](https://docs.fedoraproject.org/en-US/quick-docs/installing-mysql-mariadb/)
 
 ### [Installing PostgreSQL](https://docs.fedoraproject.org/en-US/quick-docs/postgresql/#installation/)
+
+### [Set DNS to Quad9](echo -e "nameserver 9.9.9.9\nnameserver 149.112.112.112" | sudo tee /etc/resolv.conf)
+
+### To increase scale factor add an argument to application properties "--force-device-scale-factor=1.25"

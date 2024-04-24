@@ -2,12 +2,6 @@
 
 ## My Fedora 40, KDE 6 configuration
 
-### Open runcom file
-
-```bash
-nano ~/.bashrc
-```
-
 ### Set default dnf response to "Y"
 
 ```bash
@@ -93,7 +87,7 @@ git config --global credential.helper 'cache --timeout=2628000'
 ### Installing useful apps & packages
 
 ```bash
-dnfi -y neofetch btop htop git bleachbit stacer tlp tlp-rdw qbittorrent curl cabextract xorg-x11-font-utils fontconfig libdvdcss dnf-plugins-core vlc ranger
+dnfi -y neofetch htop git bleachbit stacer tlp tlp-rdw qbittorrent curl cabextract xorg-x11-font-utils fontconfig libdvdcss dnf-plugins-core vlc
 
 dnfi -y java-latest-openjdk.x86_64
 dnfi -y gtk3-devel gcc gcc-c++ kernel-devel pkg-config make cmake clang
@@ -199,7 +193,7 @@ fif com.jetbrains.PyCharm-Professional
 fif com.jetbrains.WebStorm
 ```
 
-### [Make Python 3.11 default]
+### Make Python 3.11 default
 
 ```bash
 sudo dnf install python3.11
@@ -207,12 +201,6 @@ sudo ln -sf /usr/bin/python3.11 /usr/bin/python
 ```
 
 ### [Install Anaconda](https://www.anaconda.com/download)
-
-### Scikit-learn acceleration
-
-```bash
-conda install scikit-learn-intelex
-```
 
 ### Updating and cleaning irrelevant Anaconda packages
 
@@ -268,14 +256,6 @@ sudo dnf module disable nvidia-driver
 sudo dnf -y install cuda
 ```
 
-### Conda environment autostart
-
-```bash
-CONDA_ENV_NAME = "example"
-echo "conda activate $CONDA_ENV_NAME" >> ~/.bashrc
-echo "conda activate $CONDA_ENV_NAME" >> ~/.zshrc
-```
-
 ### Disable NUMA unavialability error messages in TensorFlow
 
 ```bash
@@ -323,7 +303,7 @@ node -v
 ### Install JS tooling
 
 ```bash
-npm -g install @biomejs/biome oxlint tslint depcheck npm-check-updates typescript prettier pnpm yarn pnpm deno bun eslint corepack
+npm -g install @biomejs/biome oxlint depcheck npm-check-updates typescript prettier pnpm yarn pnpm deno bun eslint corepack
 ```
 
 ### [Installing Neovim & NvChad](https://nvchad.com/docs/quickstart/install)
@@ -353,6 +333,10 @@ fc-list | grep "JetBrains Mono"
 
 ### [Installing PostgreSQL](https://docs.fedoraproject.org/en-US/quick-docs/postgresql/#installation/)
 
-### [Set DNS to Quad9](echo -e "nameserver 9.9.9.9\nnameserver 149.112.112.112" | sudo tee /etc/resolv.conf)
+### Set DNS to Quad9
+
+```bash
+echo -e "nameserver 9.9.9.9\nnameserver 149.112.112.112" | sudo tee /etc/resolv.conf)
+```
 
 ### To increase scale factor add an argument to application properties "--force-device-scale-factor=1.25"

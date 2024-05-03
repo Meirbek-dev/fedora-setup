@@ -1,6 +1,6 @@
-# fedora-setup
+# fedora-config
 
-## My Fedora 40, KDE 6 configuration
+## My Fedora KDE configuration
 
 ### Set default dnf response to "Y"
 
@@ -74,7 +74,7 @@ zshrc
 source ~/.zshrc
 ```
 
-### Configuring git
+### Git configuration
 
 ```bash
 git config --global user.name "Meirbek"
@@ -92,10 +92,9 @@ dnfi -y neofetch htop git bleachbit stacer tlp tlp-rdw qbittorrent curl cabextra
 dnfi -y java-latest-openjdk.x86_64
 dnfi -y gtk3-devel gcc gcc-c++ kernel-devel pkg-config make cmake clang
 dnfi -y @development-tools
-# Archives
+
 dnfi -y unzip p7zip p7zip-plugins unrar
 
-# Fonts
 dnfi -y 'google-roboto*' 'mozilla-fira*' fira-code-fonts
 # Microsoft fonts
 sudo rpm -i https://downloads.sourceforge.net/project/mscorefonts2/rpms/msttcore-fonts-installer-2.6-1.noarch.rpm
@@ -112,11 +111,10 @@ sudo dnf -y groupupdate sound-and-video
 sudo dnf -y group upgrade --with-optional --allowerasing Multimedia
 ```
 
-### Installing NCALayer
+### [Installing NCALayer](https://ncl.pki.gov.kz/)
 
 ```bash
-[Download NCALayer](https://ncl.pki.gov.kz/)
-# Install NCALayer dependencies
+# dependencies
 dnfi zenity vim-common
 ```
 
@@ -185,9 +183,9 @@ fif com.google.Chrome
 fif com.github.tchx84.Flatseal
 fif com.calibre_ebook.calibre
 fif com.todoist.Todoist
+fif md.obsidian.Obsidian
 fif org.mozilla.Thunderbird
 
-fif org.jupyter.JupyterLab
 fif com.jetbrains.IntelliJ-IDEA-Ultimate
 fif com.jetbrains.PyCharm-Professional
 fif com.jetbrains.WebStorm
@@ -200,7 +198,7 @@ sudo dnf install python3.11
 sudo ln -sf /usr/bin/python3.11 /usr/bin/python
 ```
 
-### [Install Anaconda](https://www.anaconda.com/download)
+### [Download Anaconda](https://www.anaconda.com/download)
 
 ### Updating and cleaning irrelevant Anaconda packages
 
@@ -210,14 +208,7 @@ conda update --all
 conda clean --all
 ```
 
-### Installing conda version of pip
-
-```bash
-conda install pip
-which pip
-```
-
-### Installing Language Server Protocols and python formatters
+### Python Language Server Protocols and Formatters
 
 ```bash
 npm install bash-language-server
@@ -230,55 +221,6 @@ pip install pycodestyle mccabe pyflakes pylint rope yapf autopep8 pydocstyle
 
 ```bash
 conda install jupyterlab notebook nb_conda_kernels chardet
-```
-
-### Creating conda environment for TensorFlow + CUDA development
-
-```bash
-conda create -n fras pip python=3.11
-conda activate fras
-conda update conda
-conda update --all
-pip install tensorflow[and-cuda]==2.13.1
-pip install nvidia-cudnn-cu11==8.6.*
-conda install cudatoolkit=11.8.*
-conda install -c anaconda cmake
-conda install opencv matplotlib
-pip install --upgrade customtkinter deepface
-echo "conda activate fras" >> ~/.bashrc
-# Verifying that Tensorflow is working properly
-python -c "import tensorflow as tf;print(tf.reduce_sum(tf.random.normal([1000, 1000])))"
-# Verifying that GPU is available for Tensorflow
-python -c "import tensorflow as tf; print(tf.config.list_physical_devices('GPU'))"
-
-sudo dnf config-manager --add-repo https://developer.download.nvidia.com/compute/cuda/repos/fedora35/x86_64/cuda-fedora35.repo
-sudo dnf module disable nvidia-driver
-sudo dnf -y install cuda
-```
-
-### Disable NUMA unavialability error messages in TensorFlow
-
-```bash
-export TF_CPP_MIN_LOG_LEVEL=1
-```
-
-### Pulling offical TensorFlow Docker image
-
-```bash
-docker pull tensorflow/tensorflow
-
-```
-
-### Run container with GPU support and Python interpreter
-
-```bash
-docker run -it --rm --gpus all tensorflow/tensorflow:latest-gpu python
-```
-
-### Run Jupyter Notebook Server with GPU support and Python interpreter
-
-```bash
-docker run -it --rm --gpus all -v $(realpath ~/notebooks):/tf/notebooks -p 8888:8888 tensorflow/tensorflow:latest-gpu-jupyter
 ```
 
 ### Installing and configuring web development tools
@@ -327,6 +269,32 @@ sudo fc-cache -f -v
 fc-list | grep "JetBrains Mono"
 ```
 
+### Creating conda environment for TensorFlow + CUDA development
+
+```bash
+conda create -n tf-gpu pip python=3.11
+
+conda update conda
+conda update --all
+
+conda activate tf-gpu
+
+pip install tensorflow[and-cuda]==2.13.1
+pip install nvidia-cudnn-cu11==8.6.*
+conda install cudatoolkit=11.8.*
+
+pip install --upgrade customtkinter deepface opencv-python matplotlib
+
+# Verifying that Tensorflow is working properly
+python -c "import tensorflow as tf;print(tf.reduce_sum(tf.random.normal([1000, 1000])))"
+# Verifying that GPU is available for Tensorflow
+python -c "import tensorflow as tf; print(tf.config.list_physical_devices('GPU'))"
+
+sudo dnf config-manager --add-repo https://developer.download.nvidia.com/compute/cuda/repos/fedora39/x86_64/cuda-fedora39.repo
+sudo dnf module disable nvidia-driver
+sudo dnf -y install cuda
+```
+
 ## Other resources
 
 ### [Installing MySQL](https://docs.fedoraproject.org/en-US/quick-docs/installing-mysql-mariadb/)
@@ -336,7 +304,7 @@ fc-list | grep "JetBrains Mono"
 ### Set DNS to Quad9
 
 ```bash
-echo -e "nameserver 9.9.9.9\nnameserver 149.112.112.112" | sudo tee /etc/resolv.conf)
+echo -e "nameserver 9.9.9.9\nnameserver 149.112.112.112" | sudo tee /etc/resolv.conf
 ```
 
 ### To increase scale factor add an argument to application properties "--force-device-scale-factor=1.25"
